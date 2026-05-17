@@ -1,0 +1,4 @@
+name: EasyAdmin
+version: '1.0'
+main: fr.kilian.easyAdmin.Main
+api-version: '1.21'
