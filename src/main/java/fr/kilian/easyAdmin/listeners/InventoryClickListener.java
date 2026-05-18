@@ -63,12 +63,18 @@ public class InventoryClickListener implements Listener {
                             .serialize(clicked.getItemMeta().displayName())
             );
 
+            if(target == player){
+                player.sendMessage(Component.text("Vous ne pouvez pas vous sanctionner vous même", NamedTextColor.RED));
+                return;
+            }
+
             if (target != null) {
                 inventoryManager.createLookupMenu(player, target);
             }
         }
 
         else if (title.startsWith("Inspection: ")) {
+
             event.setCancelled(true);
 
             Player target = Bukkit.getPlayer(title.replace("Inspection: ", ""));

@@ -36,18 +36,6 @@ public class VanishCommand implements CommandExecutor {
 
         vanishManager.toggle(player);
 
-        if (vanishManager.isVanished(player)) {
-            player.sendMessage(
-                    Component.text("Vous êtes maintenant invisible.")
-                            .color(NamedTextColor.GREEN)
-            );
-        } else {
-            player.sendMessage(
-                    Component.text("Vous êtes maintenant visible.")
-                            .color(NamedTextColor.YELLOW)
-            );
-        }
-
         return true;
     }
 }
