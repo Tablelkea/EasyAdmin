@@ -2,6 +2,7 @@ package fr.kilian.easyAdmin.managers;
 
 import com.destroystokyo.paper.profile.PlayerProfile;
 import com.destroystokyo.paper.profile.ProfileProperty;
+import fr.kilian.easyAdmin.utils.ItemBuilder;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
 import net.kyori.adventure.text.format.TextDecoration;
@@ -15,32 +16,42 @@ import org.bukkit.inventory.meta.SkullMeta;
 
 import java.nio.charset.StandardCharsets;
 import java.util.Base64;
+import java.util.List;
 import java.util.UUID;
 
 public class InventoryManager {
 
     public ItemStack playerList() {
-        ItemStack playerList = new ItemStack(Material.PLAYER_HEAD);
-        ItemMeta meta = playerList.getItemMeta();
-        meta.displayName(Component.text("Joueurs en ligne"));
-        playerList.setItemMeta(meta);
-        return playerList;
+        return ItemBuilder.build(
+                Material.PLAYER_HEAD,
+                "§b§lJoueurs en ligne",
+                List.of(
+                        Component.text("§7Clique pour voir la liste"),
+                        Component.text("§8des joueurs connectés")
+                )
+        );
     }
 
     public ItemStack modButton() {
-        ItemStack modButton = new ItemStack(Material.BLAZE_ROD);
-        ItemMeta meta = modButton.getItemMeta();
-        meta.displayName(Component.text("Passer en mode Modérateur"));
-        modButton.setItemMeta(meta);
-        return modButton;
+        return ItemBuilder.build(
+                Material.BLAZE_ROD,
+                "§c§lMode Modérateur",
+                List.of(
+                        Component.text("§7Clique pour activer le mode modérateur"),
+                        Component.text("§8Accès aux outils de staff")
+                )
+        );
     }
 
     public ItemStack vanishButton() {
-        ItemStack vanishButton = new ItemStack(Material.BARRIER);
-        ItemMeta meta = vanishButton.getItemMeta();
-        meta.displayName(Component.text("Passer en mode Vanish"));
-        vanishButton.setItemMeta(meta);
-        return vanishButton;
+        return ItemBuilder.build(
+                Material.BARRIER,
+                "§5§lMode Vanish",
+                List.of(
+                        Component.text("§7Clique pour devenir invisible"),
+                        Component.text("§8Les joueurs ne te verront plus")
+                )
+        );
     }
 
 
@@ -63,68 +74,98 @@ public class InventoryManager {
     }
 
     public ItemStack playerHead(Player target) {
-        ItemStack playerHead = new ItemStack(Material.PLAYER_HEAD);
-        SkullMeta meta = (SkullMeta) playerHead.getItemMeta();
+        ItemStack item = new ItemStack(Material.PLAYER_HEAD);
+        ItemMeta rawMeta = item.getItemMeta();
+
+        if (!(rawMeta instanceof SkullMeta meta)) return item;
+
         meta.setPlayerProfile(target.getPlayerProfile());
-        meta.displayName(Component.text(target.getName()));
-        playerHead.setItemMeta(meta);
-        return playerHead;
+
+        meta.displayName(Component.text("§b§l" + target.getName()));
+
+        meta.lore(List.of(
+                Component.text("§8Action staff")
+        ));
+
+        item.setItemMeta(meta);
+        return item;
     }
 
     public ItemStack teleportPlayer() {
-        ItemStack teleportPlayer = new ItemStack(Material.ENDER_PEARL);
-        ItemMeta meta = teleportPlayer.getItemMeta();
-        meta.displayName(Component.text("Se téléporter au joueur"));
-        teleportPlayer.setItemMeta(meta);
-        return teleportPlayer;
+        return ItemBuilder.build(
+                Material.ENDER_PEARL,
+                "§b§lTéléportation",
+                List.of(
+                        Component.text("§7Se téléporter au joueur"),
+                        Component.text("§8Action staff rapide")
+                )
+        );
     }
 
     public ItemStack banPermPlayer() {
-        ItemStack banPermPlayer = new ItemStack(Material.IRON_AXE);
-        ItemMeta meta = banPermPlayer.getItemMeta();
-        meta.displayName(Component.text("Bannir définitivement le joueur"));
-        banPermPlayer.setItemMeta(meta);
-        return banPermPlayer;
+        return ItemBuilder.build(
+                Material.IRON_AXE,
+                "§4§lBan Définitif",
+                List.of(
+                        Component.text("§7Bannir définitivement le joueur"),
+                        Component.text("§cAction irréversible")
+                )
+        );
     }
 
     public ItemStack mutePlayer() {
-        ItemStack mutePlayer = new ItemStack(Material.ACACIA_HANGING_SIGN);
-        ItemMeta meta = mutePlayer.getItemMeta();
-        meta.displayName(Component.text("Mute le joueur"));
-        mutePlayer.setItemMeta(meta);
-        return mutePlayer;
+        return ItemBuilder.build(
+                Material.ACACIA_HANGING_SIGN,
+                "§e§lMute",
+                List.of(
+                        Component.text("§7Rendre le joueur muet"),
+                        Component.text("§8Empêche le chat")
+                )
+        );
     }
 
     public ItemStack invseePlayer() {
-        ItemStack invseePlayer = new ItemStack(Material.CHEST);
-        ItemMeta meta = invseePlayer.getItemMeta();
-        meta.displayName(Component.text("Ouvrir l'inventaire"));
-        invseePlayer.setItemMeta(meta);
-        return invseePlayer;
+        return ItemBuilder.build(
+                Material.CHEST,
+                "§a§lInventaire",
+                List.of(
+                        Component.text("§7Voir l'inventaire du joueur"),
+                        Component.text("§8Inspection staff")
+                )
+        );
     }
 
     public ItemStack invseeEnderchestPlayer() {
-        ItemStack invseeEnderchestPlayer = new ItemStack(Material.ENDER_CHEST);
-        ItemMeta meta = invseeEnderchestPlayer.getItemMeta();
-        meta.displayName(Component.text("Ouvrir l'ender chest"));
-        invseeEnderchestPlayer.setItemMeta(meta);
-        return invseeEnderchestPlayer;
+        return ItemBuilder.build(
+                Material.ENDER_CHEST,
+                "§d§lEnder Chest",
+                List.of(
+                        Component.text("§7Voir l'ender chest du joueur"),
+                        Component.text("§8Accès administrateur")
+                )
+        );
     }
 
     public ItemStack lookupPlayer() {
-        ItemStack lookupPlayer = new ItemStack(Material.BOOK);
-        ItemMeta meta = lookupPlayer.getItemMeta();
-        meta.displayName(Component.text("Afficher les informations"));
-        lookupPlayer.setItemMeta(meta);
-        return lookupPlayer;
+        return ItemBuilder.build(
+                Material.BOOK,
+                "§9§lInformations",
+                List.of(
+                        Component.text("§7Afficher les infos du joueur"),
+                        Component.text("§8Stats / historique / etc.")
+                )
+        );
     }
 
     public ItemStack freezeButton() {
-        ItemStack freezeButton = new ItemStack(Material.BLUE_ICE);
-        ItemMeta meta = freezeButton.getItemMeta();
-        meta.displayName(Component.text("Freeze le joueur"));
-        freezeButton.setItemMeta(meta);
-        return freezeButton;
+        return ItemBuilder.build(
+                Material.BLUE_ICE,
+                "§3§lFreeze",
+                List.of(
+                        Component.text("§7Bloquer les mouvements du joueur"),
+                        Component.text("§bUtilisé en cas de suspicion")
+                )
+        );
     }
 
 
@@ -160,21 +201,11 @@ public class InventoryManager {
             SkullMeta headMeta = (SkullMeta) head.getItemMeta();
             headMeta.setPlayerProfile(joueur.getPlayerProfile());
             headMeta.displayName(Component.text(joueur.getName()));
+
             head.setItemMeta(headMeta);
             playersMenu.addItem(head);
         }
 
         player.openInventory(playersMenu);
-    }
-
-
-    public PlayerProfile createPlayerProfile(String textureUrl, String name) {
-        PlayerProfile profile = Bukkit.createProfile(UUID.randomUUID(), name);
-
-        String json = "{\"textures\":{\"SKIN\":{\"url\":\"" + textureUrl + "\"}}}";
-        String base64 = Base64.getEncoder().encodeToString(json.getBytes(StandardCharsets.UTF_8));
-
-        profile.setProperty(new ProfileProperty("textures", base64));
-        return profile;
     }
 }
