@@ -15,7 +15,7 @@ public enum ModItem {
             Component.text("❄ Freeze", NamedTextColor.AQUA).decoration(TextDecoration.ITALIC, false),
             Component.text("Clic droit sur un joueur pour le freeze.", NamedTextColor.GRAY).decoration(TextDecoration.ITALIC, false)),
 
-    INSPECT(1, Material.BOOK,
+    INSPECT(1, Material.CHEST,
             Component.text("🔍 Inspecter l'inventaire", NamedTextColor.YELLOW).decoration(TextDecoration.ITALIC, false),
             Component.text("Clic droit sur un joueur pour voir son inventaire.", NamedTextColor.GRAY).decoration(TextDecoration.ITALIC, false)),
 
@@ -27,9 +27,17 @@ public enum ModItem {
             Component.text("👁 Vanish", NamedTextColor.LIGHT_PURPLE).decoration(TextDecoration.ITALIC, false),
             Component.text("Clic droit pour activer/désactiver le vanish.", NamedTextColor.GRAY).decoration(TextDecoration.ITALIC, false)),
 
-    LOOKUP(4, Material.PAPER,
-            Component.text("📋 Lookup", NamedTextColor.GOLD).decoration(TextDecoration.ITALIC, false),
-            Component.text("Clic droit sur un joueur pour voir son profil.", NamedTextColor.GRAY).decoration(TextDecoration.ITALIC, false));
+    LOOKUP(4, Material.BOOK,
+            Component.text("📋 Global Lookup", NamedTextColor.GOLD).decoration(TextDecoration.ITALIC, false),
+            Component.text("Clic droit pour voir tous les joueurs disponible.", NamedTextColor.GRAY).decoration(TextDecoration.ITALIC, false)),
+
+    LOOKUP_CLICKED_PLAYER(5, Material.STICK,
+                          Component.text("👤 Lookup", NamedTextColor.RED).decoration(TextDecoration.ITALIC, false),
+            Component.text("Clic droit sur un joueur pour voir son profil.", NamedTextColor.GRAY).decoration(TextDecoration.ITALIC, false)),
+
+    ENDERCHEST(5, Material.ENDER_CHEST,
+            Component.text("🛅 Inspecter l'ender chest", NamedTextColor.DARK_PURPLE).decoration(TextDecoration.ITALIC, false),
+            Component.text("Clic droit sur un joueur pour voir son enderchest", NamedTextColor.GRAY).decoration(TextDecoration.ITALIC, false));
 
     public static final String PDC_KEY = "mod_item_type";
 

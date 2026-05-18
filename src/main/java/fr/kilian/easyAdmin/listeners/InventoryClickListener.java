@@ -6,6 +6,7 @@ import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
 import net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer;
 import org.bukkit.Bukkit;
+import org.bukkit.GameMode;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -121,6 +122,21 @@ public class InventoryClickListener implements Listener {
                 Main.getInstance().getFreezeManager()
                         .toggleFreeze(player, target);
             }
+        }
+
+        else if (title.equals("Se téléporter sur un joueur")){
+
+            Player target = Bukkit.getPlayer(
+                    PlainTextComponentSerializer.plainText()
+                            .serialize(clicked.getItemMeta().displayName())
+            );
+
+            player.setGameMode(GameMode.SPECTATOR);
+            player.teleport(target.getLocation());
+            player.sendMessage(Component.text("Téléporté vers ", NamedTextColor.GREEN)
+                    .append(Component.text(target.getName(), NamedTextColor.WHITE))
+                    .append(Component.text(".", NamedTextColor.GREEN)));
+
         }
     }
 }

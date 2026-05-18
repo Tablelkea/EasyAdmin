@@ -37,3 +37,6 @@ commands:
   vanish:
     permission: op
     description: toggle vanish on player
+  mod:
+    permission: op
+    description: toggle moderator mode

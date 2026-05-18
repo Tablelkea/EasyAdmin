@@ -208,4 +208,20 @@ public class InventoryManager {
 
         player.openInventory(playersMenu);
     }
+
+    public void allPlayersTeleportMenu(Player player) {
+        Inventory playersMenu = Bukkit.createInventory(null, 54, Component.text("Se téléporter sur un joueur"));
+
+        for (Player joueur : Bukkit.getOnlinePlayers()) {
+            ItemStack head = new ItemStack(Material.PLAYER_HEAD);
+            SkullMeta headMeta = (SkullMeta) head.getItemMeta();
+            headMeta.setPlayerProfile(joueur.getPlayerProfile());
+            headMeta.displayName(Component.text(joueur.getName()));
+
+            head.setItemMeta(headMeta);
+            playersMenu.addItem(head);
+        }
+
+        player.openInventory(playersMenu);
+    }
 }

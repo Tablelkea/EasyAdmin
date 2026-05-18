@@ -29,12 +29,22 @@ public class ModItemListener implements Listener {
         String modItemType = getModItemType(event.getItem());
         if (modItemType == null) return;
 
-        if (!ModItem.VANISH.name().equals(modItemType)) return;
-        if (event.getAction() != Action.RIGHT_CLICK_AIR
-                && event.getAction() != Action.RIGHT_CLICK_BLOCK) return;
+        if(ModItem.LOOKUP.name().equals(modItemType)){
+            Main.getInstance().getInventoryManager().allPlayersMenu(player);
+        }
 
-        event.setCancelled(true);
-        Main.getInstance().getVanishManager().toggle(player);
+        else if(ModItem.TELEPORT.name().equals(modItemType)){
+            Main.getInstance().getInventoryManager().allPlayersTeleportMenu(player);
+        }
+
+        else if(ModItem.VANISH.name().equals(modItemType)){
+            Main.getInstance().getVanishManager().toggle(player);
+        }
+        else{
+            event.setCancelled(true);
+            return;
+        }
+
     }
 
     @EventHandler(priority = EventPriority.HIGH)
@@ -60,14 +70,8 @@ public class ModItemListener implements Listener {
         switch (ModItem.valueOf(modItemType)) {
             case FREEZE -> Main.getInstance().getFreezeManager().toggleFreeze(player, target);
             case INSPECT -> player.openInventory(target.getInventory());
-            case TELEPORT -> {
-                player.teleport(target.getLocation());
-                player.sendMessage(Component.text("Téléporté vers ", NamedTextColor.GREEN)
-                        .append(Component.text(target.getName(), NamedTextColor.WHITE))
-                        .append(Component.text(".", NamedTextColor.GREEN)));
-            }
-            case LOOKUP, VANISH ->
-                    Main.getInstance().getInventoryManager().createLookupMenu(player, target);
+            case LOOKUP_CLICKED_PLAYER -> Main.getInstance().getInventoryManager().createLookupMenu(player, target);
+            case ENDERCHEST -> player.openInventory(target.getEnderChest());
         }
     }
     private String getModItemType(ItemStack item) {

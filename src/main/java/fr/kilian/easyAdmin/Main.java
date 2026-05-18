@@ -3,7 +3,6 @@ package fr.kilian.easyAdmin;
 import fr.kilian.easyAdmin.commands.*;
 import fr.kilian.easyAdmin.listeners.*;
 import fr.kilian.easyAdmin.managers.*;
-import fr.kilian.easyAdmin.managers.gui.ModMenuGUI;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -57,6 +56,7 @@ public final class Main extends JavaPlugin {
         getCommand("tempban").setExecutor(new TempbanCommand());
         getCommand("warn").setExecutor(new WarnCommand());
         getCommand("vanish").setExecutor(new VanishCommand());
+        getCommand("mod").setExecutor(new ModCommand());
 
         System.out.println("PLUGIN START");
 
