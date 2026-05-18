@@ -38,7 +38,6 @@ public final class Main extends JavaPlugin {
         PluginManager pm = Bukkit.getPluginManager();
 
         pm.registerEvents(new PlayerJoinListener(), this);
-        pm.registerEvents(new PlayerQuitListener(), this);
         pm.registerEvents(new ModItemListener(), this);
         pm.registerEvents(new InventoryClickListener(), this);
         pm.registerEvents(new FreezeListener(), this);
@@ -57,6 +56,7 @@ public final class Main extends JavaPlugin {
         getCommand("unmute").setExecutor(new UnmuteCommand());
         getCommand("tempban").setExecutor(new TempbanCommand());
         getCommand("warn").setExecutor(new WarnCommand());
+        getCommand("vanish").setExecutor(new VanishCommand());
 
         System.out.println("PLUGIN START");
 

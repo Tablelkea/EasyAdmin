@@ -34,3 +34,6 @@ commands:
   warn:
     permission: op
     description: warn a player
+  vanish:
+    permission: op
+    description: toggle vanish on player
