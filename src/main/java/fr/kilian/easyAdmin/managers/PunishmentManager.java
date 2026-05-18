@@ -57,7 +57,7 @@ public class PunishmentManager {
 
         target.kick(
                 Component.text(PREFIX.getPrefix()+" Vous avez été banni pour "
-                                + duration.toMinutes() + " minutes.")
+                                + duration.toDays() + " jours.")
                         .color(NamedTextColor.RED)
         );
 

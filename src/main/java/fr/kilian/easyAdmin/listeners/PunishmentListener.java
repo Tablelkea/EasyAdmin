@@ -2,12 +2,14 @@ package fr.kilian.easyAdmin.listeners;
 
 import fr.kilian.easyAdmin.Main;
 import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.format.NamedTextColor;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.AsyncPlayerPreLoginEvent;
 import org.jspecify.annotations.NonNull;
 
 import static fr.kilian.easyAdmin.utils.MessagesFormats.BAN_MESSAGE;
+import static fr.kilian.easyAdmin.utils.MessagesFormats.PREFIX;
 
 public class PunishmentListener implements Listener {
 
