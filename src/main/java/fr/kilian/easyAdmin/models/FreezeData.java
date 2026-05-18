@@ -1,15 +1,27 @@
 package fr.kilian.easyAdmin.models;
 
+import java.util.Date;
 import java.util.UUID;
 
 public class FreezeData {
 
-    private UUID target;
+    private final UUID target;
 
-    private UUID moderator;
+    private final UUID moderator;
 
-    private long startedAt;
+    private final long startedAt;
 
-    private String reason;
+    private final String reason;
+
+    public FreezeData(UUID target, UUID moderator, String reason) {
+        this.target = target;
+        this.moderator = moderator;
+        this.startedAt = new Date().getTime();
+        this.reason = reason;
+    }
+
+    public UUID getTarget() {
+        return target;
+    }
 
 }

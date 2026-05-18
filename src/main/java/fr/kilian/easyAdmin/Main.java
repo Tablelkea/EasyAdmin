@@ -1,12 +1,16 @@
 package fr.kilian.easyAdmin;
 
+import fr.kilian.easyAdmin.commands.*;
 import fr.kilian.easyAdmin.listeners.*;
 import fr.kilian.easyAdmin.managers.*;
+import fr.kilian.easyAdmin.managers.gui.ModMenuGUI;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public final class Main extends JavaPlugin {
+
+    private static Main instance;
 
     private FreezeManager freezeManager;
     private InventoryManager inventoryManager;
@@ -20,6 +24,7 @@ public final class Main extends JavaPlugin {
     @Override
     public void onEnable() {
         // Plugin startup logic
+        instance = this;
 
         freezeManager = new FreezeManager();
         inventoryManager = new InventoryManager();
@@ -40,12 +45,29 @@ public final class Main extends JavaPlugin {
         pm.registerEvents(new VanishListener(), this);
         pm.registerEvents(new PunishmentListener(), this);
         pm.registerEvents(new ProtectionListener(), this);
+        pm.registerEvents(new ChatListener(), this);
+
+        getCommand("easyadmin").setExecutor(new EasyAdminCommand());
+        getCommand("lookup").setExecutor(new LookupCommand());
+        getCommand("ban").setExecutor(new BanCommand());
+        getCommand("unban").setExecutor(new UnbanCommand());
+        getCommand("freeze").setExecutor(new FreezeCommand());
+        getCommand("unfreeze").setExecutor(new UnfreezeCommand());
+        getCommand("mute").setExecutor(new MuteCommand());
+        getCommand("unmute").setExecutor(new UnmuteCommand());
+        getCommand("tempban").setExecutor(new TempbanCommand());
+        getCommand("warn").setExecutor(new WarnCommand());
+
+        System.out.println("PLUGIN START");
 
     }
 
     @Override
     public void onDisable() {
-        // Plugin shutdown logic
+    }
+
+    public static Main getInstance() {
+        return instance;
     }
 
     public FreezeManager getFreezeManager() {
@@ -79,4 +101,5 @@ public final class Main extends JavaPlugin {
     public VanishManager getVanishManager() {
         return vanishManager;
     }
+
 }

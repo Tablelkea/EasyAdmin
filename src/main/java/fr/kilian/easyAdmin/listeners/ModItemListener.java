@@ -1,13 +1,79 @@
 package fr.kilian.easyAdmin.listeners;
 
+import fr.kilian.easyAdmin.Main;
+import fr.kilian.easyAdmin.models.enums.ModItem;
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.format.NamedTextColor;
+import org.bukkit.entity.Entity;
+import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
+import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerInteractEntityEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.inventory.EquipmentSlot;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.persistence.PersistentDataType;
+import org.jspecify.annotations.NonNull;
 
 public class ModItemListener implements Listener {
 
-    public void onInteract(PlayerInteractEvent event){};
+    @EventHandler(priority = EventPriority.HIGH)
+    public void onInteract(@NonNull PlayerInteractEvent event) {
+        if (event.getHand() == EquipmentSlot.OFF_HAND) return;
 
-    public void onInteractOnEntity(PlayerInteractEntityEvent event){};
+        Player player = event.getPlayer();
+        if (!Main.getInstance().getModManager().isInMod(player)) return;
 
+        String modItemType = getModItemType(event.getItem());
+        if (modItemType == null) return;
+
+        if (!ModItem.VANISH.name().equals(modItemType)) return;
+        if (event.getAction() != Action.RIGHT_CLICK_AIR
+                && event.getAction() != Action.RIGHT_CLICK_BLOCK) return;
+
+        event.setCancelled(true);
+        Main.getInstance().getVanishManager().toggle(player);
+    }
+
+    @EventHandler(priority = EventPriority.HIGH)
+    public void onInteractOnEntity(@NonNull PlayerInteractEntityEvent event) {
+        if (event.getHand() == EquipmentSlot.OFF_HAND) return;
+
+        Player player = event.getPlayer();
+        if (!Main.getInstance().getModManager().isInMod(player)) return;
+
+        String modItemType = getModItemType(player.getInventory().getItemInMainHand());
+        if (modItemType == null) return;
+
+        Entity entity = event.getRightClicked();
+        if (!(entity instanceof Player target)) return;
+
+        event.setCancelled(true);
+
+        if (target.equals(player)) {
+            player.sendMessage(Component.text("Vous ne pouvez pas vous cibler vous-même.", NamedTextColor.RED));
+            return;
+        }
+
+        switch (ModItem.valueOf(modItemType)) {
+            case FREEZE -> Main.getInstance().getFreezeManager().toggleFreeze(player, target);
+            case INSPECT -> player.openInventory(target.getInventory());
+            case TELEPORT -> {
+                player.teleport(target.getLocation());
+                player.sendMessage(Component.text("Téléporté vers ", NamedTextColor.GREEN)
+                        .append(Component.text(target.getName(), NamedTextColor.WHITE))
+                        .append(Component.text(".", NamedTextColor.GREEN)));
+            }
+            case LOOKUP, VANISH ->
+                    Main.getInstance().getInventoryManager().createLookupMenu(player, target);
+        }
+    }
+    private String getModItemType(ItemStack item) {
+        if (item == null || !item.hasItemMeta()) return null;
+        return item.getItemMeta()
+                .getPersistentDataContainer()
+                .get(Main.getInstance().getModManager().getModItemKey(), PersistentDataType.STRING);
+    }
 }

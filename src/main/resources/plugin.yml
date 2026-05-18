@@ -2,3 +2,35 @@ name: EasyAdmin
 version: '1.0'
 main: fr.kilian.easyAdmin.Main
 api-version: '1.21'
+commands:
+  easyadmin:
+    aliases: ea
+    permission: op
+    description: easy admin principal command
+  lookup:
+    permission: op
+    description: lookup a specific player
+  ban:
+    permission: op
+    description: ban a player
+  unban:
+    permission: op
+    description: unban a player
+  freeze:
+    permission: op
+    description: freeze a player
+  unfreeze:
+    permission: op
+    description: unfreeze a player
+  mute:
+    permission: op
+    description: mute a player
+  unmute:
+    permission: op
+    description: unmute a player
+  tempban:
+    permission: op
+    description: temporary ban a player
+  warn:
+    permission: op
+    description: warn a player
