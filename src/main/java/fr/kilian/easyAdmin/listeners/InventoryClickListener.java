@@ -16,7 +16,10 @@ import org.jspecify.annotations.NonNull;
 
 import java.time.Duration;
 
+import static fr.kilian.easyAdmin.utils.MessagesFormats.*;
+
 public class InventoryClickListener implements Listener {
+
 
     @EventHandler
     public void onClick(@NonNull InventoryClickEvent event) {
@@ -39,7 +42,7 @@ public class InventoryClickListener implements Listener {
 
         ItemStack clicked = event.getCurrentItem();
 
-        if (title.equals("Menu Principal")) {
+        if (title.equals(inventoryManager.mainMenuTitle)) {
             event.setCancelled(true);
 
             if (clicked.isSimilar(inventoryManager.playerList())) {
@@ -53,7 +56,7 @@ public class InventoryClickListener implements Listener {
             }
         }
 
-        else if (title.equals("Joueurs en ligne")) {
+        else if (title.equals(inventoryManager.onlinePlayers)) {
             event.setCancelled(true);
 
             if (clicked.getItemMeta() == null) return;
@@ -64,7 +67,7 @@ public class InventoryClickListener implements Listener {
             );
 
             if(target == player){
-                player.sendMessage(Component.text("Vous ne pouvez pas vous sanctionner vous même", NamedTextColor.RED));
+                player.sendMessage(Component.text(CANNOT_SELF_SANCTION.getMessage()));
                 return;
             }
 
@@ -73,11 +76,11 @@ public class InventoryClickListener implements Listener {
             }
         }
 
-        else if (title.startsWith("Inspection: ")) {
+        else if (title.startsWith(inventoryManager.inspection)) {
 
             event.setCancelled(true);
 
-            Player target = Bukkit.getPlayer(title.replace("Inspection: ", ""));
+            Player target = Bukkit.getPlayer(title.replace(inventoryManager.inspection, ""));
             if (target == null) return;
 
             if (clicked.isSimilar(inventoryManager.teleportPlayer())) {
@@ -130,7 +133,7 @@ public class InventoryClickListener implements Listener {
             }
         }
 
-        else if (title.equals("Se téléporter sur un joueur")){
+        else if (title.equals(inventoryManager.onlineTeleportPlayers)){
 
             Player target = Bukkit.getPlayer(
                     PlainTextComponentSerializer.plainText()
@@ -139,7 +142,7 @@ public class InventoryClickListener implements Listener {
 
             player.setGameMode(GameMode.SPECTATOR);
             player.teleport(target.getLocation());
-            player.sendMessage(Component.text("Téléporté vers ", NamedTextColor.GREEN)
+            player.sendMessage(Component.text(PREFIX.getPrefix()+"Téléporté vers ", NamedTextColor.GREEN)
                     .append(Component.text(target.getName(), NamedTextColor.WHITE))
                     .append(Component.text(".", NamedTextColor.GREEN)));
 

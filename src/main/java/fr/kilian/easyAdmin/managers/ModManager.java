@@ -3,7 +3,6 @@ package fr.kilian.easyAdmin.managers;
 import fr.kilian.easyAdmin.Main;
 import fr.kilian.easyAdmin.models.enums.ModItem;
 import net.kyori.adventure.text.Component;
-import net.kyori.adventure.text.format.NamedTextColor;
 import org.bukkit.NamespacedKey;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -12,6 +11,9 @@ import org.jspecify.annotations.NonNull;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
+
+import static fr.kilian.easyAdmin.utils.MessagesFormats.LEAVE_MODERATOR_MODE;
+import static fr.kilian.easyAdmin.utils.MessagesFormats.SWITCH_TO_MODERATOR_MODE;
 
 public class ModManager {
 
@@ -27,14 +29,14 @@ public class ModManager {
     public void enableMod(@NonNull Player player) {
         saveInventory(player);
         giveModItems(player);
-        player.sendMessage(Component.text("Vous passez en mode Modérateur.").color(NamedTextColor.GREEN));
+        player.sendMessage(Component.text(SWITCH_TO_MODERATOR_MODE.getMessage()));
         Main.getInstance().getLogManager().logModToggle(player, true);
     }
 
     public void disableMod(@NonNull Player player) {
         clearModItems(player);
         restoreInventory(player);
-        player.sendMessage(Component.text("Vous quittez le mode Modérateur.").color(NamedTextColor.RED));
+        player.sendMessage(Component.text(LEAVE_MODERATOR_MODE.getMessage()));
         Main.getInstance().getLogManager().logModToggle(player, false);
     }
 

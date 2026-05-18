@@ -3,7 +3,6 @@ package fr.kilian.easyAdmin.commands;
 import fr.kilian.easyAdmin.Main;
 import fr.kilian.easyAdmin.managers.PunishmentManager;
 import net.kyori.adventure.text.Component;
-import net.kyori.adventure.text.format.NamedTextColor;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -12,6 +11,8 @@ import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Arrays;
+
+import static fr.kilian.easyAdmin.utils.MessagesFormats.*;
 
 public class WarnCommand implements CommandExecutor {
 
@@ -24,16 +25,14 @@ public class WarnCommand implements CommandExecutor {
         if (sender instanceof Player player &&
                 !player.hasPermission("easyadmin.warn")) {
             sender.sendMessage(
-                    Component.text("Permission insuffisante.")
-                            .color(NamedTextColor.RED)
+                    Component.text(DONT_HAVE_PERMISSION.getMessage())
             );
             return true;
         }
 
         if (args.length < 2) {
             sender.sendMessage(
-                    Component.text("Usage: /warn <joueur> <raison>")
-                            .color(NamedTextColor.YELLOW)
+                    Component.text(WARN_HELP.getMessage())
             );
             return true;
         }
@@ -42,16 +41,14 @@ public class WarnCommand implements CommandExecutor {
 
         if (target == null) {
             sender.sendMessage(
-                    Component.text("Joueur introuvable.")
-                            .color(NamedTextColor.RED)
+                    Component.text(PLAYER_NOT_FOUND.getMessage())
             );
             return true;
         }
 
         if (sender instanceof Player player && target.equals(player)) {
             sender.sendMessage(
-                    Component.text("Vous ne pouvez pas vous warn.")
-                            .color(NamedTextColor.RED)
+                    Component.text(CANNOT_SELF_WARN.getMessage())
             );
             return true;
         }
@@ -66,10 +63,7 @@ public class WarnCommand implements CommandExecutor {
 
         punishmentManager.warn(mod, target, reason);
 
-        sender.sendMessage(
-                Component.text(target.getName() + " a été averti.")
-                        .color(NamedTextColor.GREEN)
-        );
+
 
         return true;
     }

@@ -7,12 +7,15 @@ import fr.kilian.easyAdmin.models.StaffLog;
 import fr.kilian.easyAdmin.models.enums.PunishmentType;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
+import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.jspecify.annotations.NonNull;
 
 import java.time.Duration;
 import java.time.Instant;
 import java.util.*;
+
+import static fr.kilian.easyAdmin.utils.MessagesFormats.*;
 
 public class PunishmentManager {
 
@@ -27,7 +30,7 @@ public class PunishmentManager {
         Main.getInstance().getLogManager().logPunishment(mod, target, "BAN PERM");
 
         target.kick(
-                Component.text("[ADMINISTRATION] Vous avez été banni définitivement de ce serveur.")
+                Component.text(PERMANENT_BAN_MESSAGE.getMessage())
                         .color(NamedTextColor.RED)
         );
 
@@ -35,6 +38,8 @@ public class PunishmentManager {
                 new Punishment(target.getUniqueId(), mod.getUniqueId(),
                         PunishmentType.BAN, reason, 0)
         );
+
+        mod.sendMessage(PREFIX.getPrefix()+target.getName() + " a été banni.");
     }
 
     public void tempBan(@NonNull Player mod,
@@ -51,9 +56,15 @@ public class PunishmentManager {
         Main.getInstance().getLogManager().logPunishment(mod, target, "TEMPBAN");
 
         target.kick(
-                Component.text("[ADMINISTRATION] Vous avez été banni pour "
+                Component.text(PREFIX.getPrefix()+" Vous avez été banni pour "
                                 + duration.toMinutes() + " minutes.")
                         .color(NamedTextColor.RED)
+        );
+
+        mod.sendMessage(
+                Component.text(target.getName()
+                        + " a été banni pour "
+                        + duration + " jour(s).")
         );
 
         PlayerProfile.getPlayerProfile(target).getPunishments().add(
@@ -72,7 +83,7 @@ public class PunishmentManager {
         new StaffLog(mod.getUniqueId(), target.getUniqueId(), "KICK", reason);
 
         target.kick(
-                Component.text("[ADMINISTRATION] Vous avez été expulsé : " + reason)
+                Component.text(PREFIX.getPrefix() +" Vous avez été expulsé : " + reason)
                         .color(NamedTextColor.RED)
         );
     }
@@ -87,8 +98,12 @@ public class PunishmentManager {
         new StaffLog(mod.getUniqueId(), target.getUniqueId(), "WARN", reason);
 
         target.sendMessage(
-                Component.text("[ADMINISTRATION] Avertissement par "
+                Component.text(PREFIX.getPrefix()+" Avertissement par "
                         + mod.getName() + " : " + reason)
+        );
+
+        mod.sendMessage(
+                Component.text(target.getName() + " a été averti.")
         );
     }
 
@@ -111,9 +126,15 @@ public class PunishmentManager {
         new StaffLog(mod.getUniqueId(), target.getUniqueId(), "MUTE", reason);
 
         target.sendMessage(
-                Component.text("[ADMINISTRATION] Vous êtes mute pour "
+                Component.text(PREFIX.getPrefix()+" Vous êtes mute pour "
                                 + duration.toMinutes() + " minutes.")
                         .color(NamedTextColor.RED)
+        );
+
+        mod.sendMessage(
+                Component.text(PREFIX.getPrefix()+ target.getName()
+                        + " a été réduit au silence pour "
+                        + duration + " minutes.")
         );
     }
 
@@ -127,8 +148,11 @@ public class PunishmentManager {
         new StaffLog(mod.getUniqueId(), target.getUniqueId(), "UNMUTE", "");
 
         target.sendMessage(
-                Component.text("[ADMINISTRATION] Vous n'êtes plus réduit au silence.")
-                        .color(NamedTextColor.GREEN)
+                Component.text(UNMUTE_MESSAGE.getMessage())
+        );
+
+        mod.sendMessage(
+                Component.text(target.getName() + " a été unmute.")
         );
     }
 
@@ -139,7 +163,7 @@ public class PunishmentManager {
         mutedPlayers.remove(target.getUniqueId());
 
         target.sendMessage(
-                Component.text("[ADMINISTRATION] Vous n'êtes plus réduit au silence.")
+                Component.text(UNMUTE_MESSAGE.getMessage())
                         .color(NamedTextColor.GREEN)
         );
     }
@@ -154,6 +178,10 @@ public class PunishmentManager {
                         + " | ACTION: DEBAN");
 
         new StaffLog(mod.getUniqueId(), playerUUID, "DEBAN", "");
+
+        mod.sendMessage(
+                Component.text(PREFIX.getPrefix()+ Bukkit.getPlayer(playerUUID).getName() + " a été débanni.")
+        );
     }
 
     public boolean isBanned(@NonNull UUID uuid) {

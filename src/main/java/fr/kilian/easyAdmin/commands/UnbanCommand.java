@@ -4,7 +4,6 @@ import fr.kilian.easyAdmin.Main;
 import fr.kilian.easyAdmin.managers.PunishmentManager;
 import fr.kilian.easyAdmin.models.PlayerProfile;
 import net.kyori.adventure.text.Component;
-import net.kyori.adventure.text.format.NamedTextColor;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -13,6 +12,8 @@ import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.UUID;
+
+import static fr.kilian.easyAdmin.utils.MessagesFormats.*;
 
 public class UnbanCommand implements CommandExecutor {
 
@@ -25,16 +26,14 @@ public class UnbanCommand implements CommandExecutor {
         if (sender instanceof Player player &&
                 !player.hasPermission("easyadmin.unban")) {
             sender.sendMessage(
-                    Component.text("Permission insuffisante.")
-                            .color(NamedTextColor.RED)
+                    Component.text(DONT_HAVE_PERMISSION.getMessage())
             );
             return true;
         }
 
         if (args.length < 1) {
             sender.sendMessage(
-                    Component.text("Usage: /unban <joueur>")
-                            .color(NamedTextColor.YELLOW)
+                    Component.text(UNBAN_HELP.getMessage())
             );
             return true;
         }
@@ -46,8 +45,7 @@ public class UnbanCommand implements CommandExecutor {
 
         if (targetUUID == null) {
             sender.sendMessage(
-                    Component.text("Joueur inconnu.")
-                            .color(NamedTextColor.RED)
+                    Component.text(PLAYER_NOT_FOUND.getMessage())
             );
             return true;
         }
@@ -57,8 +55,7 @@ public class UnbanCommand implements CommandExecutor {
 
         if (!punishmentManager.isBanned(targetUUID)) {
             sender.sendMessage(
-                    Component.text("Ce joueur n'est pas banni.")
-                            .color(NamedTextColor.RED)
+                    Component.text(PLAYER_NOT_BANNED.getMessage())
             );
             return true;
         }
@@ -69,18 +66,12 @@ public class UnbanCommand implements CommandExecutor {
 
         if (mod == null) {
             sender.sendMessage(
-                    Component.text("Aucun joueur connecté pour exécuter cette commande.")
-                            .color(NamedTextColor.RED)
+                    Component.text(NO_ONLINE_PLAYER.getMessage())
             );
             return true;
         }
 
         punishmentManager.unban(mod, targetUUID);
-
-        sender.sendMessage(
-                Component.text(targetName + " a été débanni.")
-                        .color(NamedTextColor.GREEN)
-        );
 
         return true;
     }

@@ -1,11 +1,7 @@
 package fr.kilian.easyAdmin.managers;
 
-import com.destroystokyo.paper.profile.PlayerProfile;
-import com.destroystokyo.paper.profile.ProfileProperty;
 import fr.kilian.easyAdmin.utils.ItemBuilder;
 import net.kyori.adventure.text.Component;
-import net.kyori.adventure.text.format.NamedTextColor;
-import net.kyori.adventure.text.format.TextDecoration;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -14,12 +10,14 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.SkullMeta;
 
-import java.nio.charset.StandardCharsets;
-import java.util.Base64;
 import java.util.List;
-import java.util.UUID;
 
 public class InventoryManager {
+
+    public String mainMenuTitle = "Menu Principal";
+    public String onlinePlayers = "Joueurs en ligne";
+    public String onlineTeleportPlayers = "Se téléporter sur un joueur";
+    public String inspection = "Inspection: ";
 
     public ItemStack playerList() {
         return ItemBuilder.build(
@@ -56,9 +54,7 @@ public class InventoryManager {
 
 
     public void createMainMenu(Player player) {
-        Component title = Component.text("Menu Principal")
-                .color(NamedTextColor.DARK_GRAY)
-                .decorate(TextDecoration.BOLD);
+        Component title = Component.text(mainMenuTitle);
 
         Inventory mainMenu = Bukkit.createInventory(null, 27, title);
 
@@ -170,9 +166,7 @@ public class InventoryManager {
 
 
     public void createLookupMenu(Player mod, Player target) {
-        Component title = Component.text("Inspection: " + target.getName())
-                .color(NamedTextColor.DARK_GRAY)
-                .decorate(TextDecoration.BOLD);
+        Component title = Component.text(inspection + target.getName());
 
         Inventory lookupMenu = Bukkit.createInventory(null, 27, title);
 
@@ -194,7 +188,7 @@ public class InventoryManager {
 
 
     public void allPlayersMenu(Player player) {
-        Inventory playersMenu = Bukkit.createInventory(null, 54, Component.text("Joueurs en ligne"));
+        Inventory playersMenu = Bukkit.createInventory(null, 54, Component.text(onlinePlayers));
 
         for (Player joueur : Bukkit.getOnlinePlayers()) {
             ItemStack head = new ItemStack(Material.PLAYER_HEAD);
@@ -210,7 +204,7 @@ public class InventoryManager {
     }
 
     public void allPlayersTeleportMenu(Player player) {
-        Inventory playersMenu = Bukkit.createInventory(null, 54, Component.text("Se téléporter sur un joueur"));
+        Inventory playersMenu = Bukkit.createInventory(null, 54, Component.text(onlineTeleportPlayers));
 
         for (Player joueur : Bukkit.getOnlinePlayers()) {
             ItemStack head = new ItemStack(Material.PLAYER_HEAD);

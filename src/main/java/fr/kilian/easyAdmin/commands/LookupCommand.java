@@ -11,6 +11,9 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
+import static fr.kilian.easyAdmin.utils.MessagesFormats.LOOKUP_HELP;
+import static fr.kilian.easyAdmin.utils.MessagesFormats.PLAYER_NOT_FOUND;
+
 public class LookupCommand implements CommandExecutor {
 
     @Override
@@ -26,7 +29,7 @@ public class LookupCommand implements CommandExecutor {
         // /lookup sans argument
         if (args.length == 0) {
             if (!(sender instanceof Player player)) {
-                sender.sendMessage("Usage: /lookup <joueur>");
+                sender.sendMessage(LOOKUP_HELP.getMessage());
                 return true;
             }
             target = player;
@@ -35,8 +38,7 @@ public class LookupCommand implements CommandExecutor {
 
             if (target == null) {
                 sender.sendMessage(
-                        Component.text("Joueur introuvable.")
-                                .color(NamedTextColor.RED)
+                        Component.text(PLAYER_NOT_FOUND.getMessage())
                 );
                 return true;
             }

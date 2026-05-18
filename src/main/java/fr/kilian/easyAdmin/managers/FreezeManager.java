@@ -12,6 +12,8 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
+import static fr.kilian.easyAdmin.utils.MessagesFormats.*;
+
 public class FreezeManager {
 
     private final Map<UUID, FreezeData> freezeData = new HashMap<>();
@@ -20,7 +22,7 @@ public class FreezeManager {
 
         if (isFrozen(target)) {
             mod.sendMessage(
-                    Component.text("[ADMINISTRATION] Ce joueur est déjà freeze.")
+                    Component.text(ALREADY_FREEZE.getMessage())
                             .color(NamedTextColor.RED)
             );
             return;
@@ -38,18 +40,15 @@ public class FreezeManager {
         new StaffLog(mod.getUniqueId(), target.getUniqueId(), "FREEZE", reason);
 
         mod.sendMessage(
-                Component.text("[ADMINISTRATION] " + target.getName() + " a été freeze.")
-                        .color(NamedTextColor.GREEN)
+                Component.text(PREFIX.getPrefix() + target.getName() + " a été freeze.")
         );
 
         target.sendMessage(
                 Component.text("Vous avez été freeze par " + mod.getName() + ".")
-                        .color(NamedTextColor.RED)
         );
 
         target.sendMessage(
-                Component.text("Ne vous déconnectez pas. Attendez un membre du staff.")
-                        .color(NamedTextColor.YELLOW)
+                Component.text(DONT_DISCONNECT.getMessage())
         );
     }
 
@@ -57,8 +56,7 @@ public class FreezeManager {
 
         if (!isFrozen(target)) {
             mod.sendMessage(
-                    Component.text("[ADMINISTRATION] Ce joueur n'est pas freeze.")
-                            .color(NamedTextColor.RED)
+                    Component.text(PLAYER_NOT_FREEZE.getMessage())
             );
             return;
         }
@@ -70,14 +68,12 @@ public class FreezeManager {
 
         // message staff
         mod.sendMessage(
-                Component.text("[ADMINISTRATION] " + target.getName() + " a été unfreeze.")
-                        .color(NamedTextColor.GREEN)
+                Component.text(PREFIX.getPrefix() + target.getName() + " a été unfreeze.")
         );
 
         // message joueur
         target.sendMessage(
-                Component.text("Vous n'êtes plus freeze.")
-                        .color(NamedTextColor.GREEN)
+                Component.text(UNFREEZE_MESSAGE.getMessage())
         );
     }
 
@@ -90,7 +86,6 @@ public class FreezeManager {
 
         target.sendMessage(
                 Component.text("Vous n'êtes plus freeze.")
-                        .color(NamedTextColor.GREEN)
         );
     }
 

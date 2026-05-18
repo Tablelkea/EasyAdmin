@@ -3,10 +3,11 @@ package fr.kilian.easyAdmin.listeners;
 import fr.kilian.easyAdmin.Main;
 import io.papermc.paper.event.player.AsyncChatEvent;
 import net.kyori.adventure.text.Component;
-import net.kyori.adventure.text.format.NamedTextColor;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.jspecify.annotations.NonNull;
+
+import static fr.kilian.easyAdmin.utils.MessagesFormats.MUTE_MESSAGE;
 
 public class ChatListener implements Listener {
 
@@ -23,8 +24,8 @@ public class ChatListener implements Listener {
 
         event.getPlayer().sendMessage(
                 Component.text(
-                        "[ADMINISTRATION] Vous êtes actuellement réduit au silence."
-                ).color(NamedTextColor.RED)
+                        MUTE_MESSAGE.getMessage()
+                )
         );
     }
 }

@@ -3,7 +3,6 @@ package fr.kilian.easyAdmin.commands;
 import fr.kilian.easyAdmin.Main;
 import fr.kilian.easyAdmin.managers.PunishmentManager;
 import net.kyori.adventure.text.Component;
-import net.kyori.adventure.text.format.NamedTextColor;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -13,6 +12,8 @@ import org.jetbrains.annotations.NotNull;
 
 import java.time.Duration;
 import java.util.Arrays;
+
+import static fr.kilian.easyAdmin.utils.MessagesFormats.*;
 
 public class MuteCommand implements CommandExecutor {
 
@@ -25,16 +26,14 @@ public class MuteCommand implements CommandExecutor {
         if (sender instanceof Player player &&
                 !player.hasPermission("easyadmin.mute")) {
             sender.sendMessage(
-                    Component.text("Permission insuffisante.")
-                            .color(NamedTextColor.RED)
+                    Component.text(DONT_HAVE_PERMISSION.getMessage())
             );
             return true;
         }
 
         if (args.length < 3) {
             sender.sendMessage(
-                    Component.text("Usage: /mute <joueur> <minutes> <raison>")
-                            .color(NamedTextColor.YELLOW)
+                    Component.text(MUTE_HELP.getMessage())
             );
             return true;
         }
@@ -43,16 +42,14 @@ public class MuteCommand implements CommandExecutor {
 
         if (target == null) {
             sender.sendMessage(
-                    Component.text("Joueur introuvable.")
-                            .color(NamedTextColor.RED)
+                    Component.text(PLAYER_NOT_FOUND.getMessage())
             );
             return true;
         }
 
         if (sender instanceof Player player && target.equals(player)) {
             sender.sendMessage(
-                    Component.text("Vous ne pouvez pas vous mute.")
-                            .color(NamedTextColor.RED)
+                    Component.text(CANNOT_SELF_MUTE.getMessage())
             );
             return true;
         }
@@ -63,8 +60,7 @@ public class MuteCommand implements CommandExecutor {
             duration = Long.parseLong(args[1]);
         } catch (NumberFormatException e) {
             sender.sendMessage(
-                    Component.text("Durée invalide.")
-                            .color(NamedTextColor.RED)
+                    Component.text(BAD_TIME_ARGUMENT.getMessage())
             );
             return true;
         }
@@ -77,8 +73,7 @@ public class MuteCommand implements CommandExecutor {
 
         if (punishmentManager.isMuted(target.getUniqueId())) {
             sender.sendMessage(
-                    Component.text("Ce joueur est déjà mute.")
-                            .color(NamedTextColor.RED)
+                    Component.text(PREFIX.getPrefix()+"Ce joueur est déjà mute.")
             );
             return true;
         }
@@ -90,13 +85,6 @@ public class MuteCommand implements CommandExecutor {
                 target,
                 Duration.ofMinutes(duration),
                 reason
-        );
-
-        sender.sendMessage(
-                Component.text(target.getName()
-                                + " a été réduit au silence pour "
-                                + duration + " minutes.")
-                        .color(NamedTextColor.GREEN)
         );
 
         return true;

@@ -3,13 +3,18 @@ package fr.kilian.easyAdmin.commands;
 import fr.kilian.easyAdmin.Main;
 import fr.kilian.easyAdmin.managers.PermissionManager;
 import org.bukkit.Bukkit;
-import org.bukkit.command.*;
+import org.bukkit.command.Command;
+import org.bukkit.command.CommandExecutor;
+import org.bukkit.command.CommandSender;
+import org.bukkit.command.TabCompleter;
 import org.bukkit.entity.Player;
 import org.bukkit.permissions.Permission;
 import org.jspecify.annotations.NonNull;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import static fr.kilian.easyAdmin.utils.MessagesFormats.*;
 
 public class PermissionCommand implements CommandExecutor, TabCompleter {
 
@@ -23,12 +28,12 @@ public class PermissionCommand implements CommandExecutor, TabCompleter {
                              @NonNull String[] args) {
 
         if (!(sender instanceof Player mod)) {
-            sender.sendMessage("Commande réservée aux joueurs.");
+            sender.sendMessage(AVAILABLE_ONLY_INGAME.getMessage());
             return true;
         }
 
         if (!mod.hasPermission("easyadmin.permission")) {
-            mod.sendMessage("§cPermission insuffisante.");
+            mod.sendMessage(DONT_HAVE_PERMISSION.getMessage());
             return true;
         }
 
@@ -41,7 +46,7 @@ public class PermissionCommand implements CommandExecutor, TabCompleter {
         Player target = Bukkit.getPlayer(args[1]);
 
         if (target == null) {
-            mod.sendMessage("§cJoueur introuvable.");
+            mod.sendMessage(PLAYER_NOT_FOUND.getMessage());
             return true;
         }
 
@@ -58,7 +63,7 @@ public class PermissionCommand implements CommandExecutor, TabCompleter {
 
                 permissionManager.givePermission(target, permission);
 
-                mod.sendMessage("§aPermission donnée.");
+                mod.sendMessage(PERMISSION_GIVE.getMessage());
             }
 
             case "temp" -> {
@@ -75,7 +80,7 @@ public class PermissionCommand implements CommandExecutor, TabCompleter {
                 try {
                     minutes = Long.parseLong(args[3]);
                 } catch (NumberFormatException e) {
-                    mod.sendMessage("§cTemps invalide.");
+                    mod.sendMessage(BAD_TIME_ARGUMENT.getMessage());
                     return true;
                 }
 
@@ -85,7 +90,7 @@ public class PermissionCommand implements CommandExecutor, TabCompleter {
                         minutes * 60 * 1000
                 );
 
-                mod.sendMessage("§aPermission temporaire donnée.");
+                mod.sendMessage(TEMPORARY_PERMISSION_GIVE.getMessage());
             }
 
             case "remove" -> {
@@ -99,7 +104,7 @@ public class PermissionCommand implements CommandExecutor, TabCompleter {
 
                 permissionManager.removePermission(target, permission);
 
-                mod.sendMessage("§aPermission retirée.");
+                mod.sendMessage(PERMISSION_REMOVE.getMessage());
             }
 
             case "list" -> {
@@ -109,7 +114,7 @@ public class PermissionCommand implements CommandExecutor, TabCompleter {
                 mod.sendMessage("§6Permissions de " + target.getName() + ":");
 
                 if (permissions.isEmpty()) {
-                    mod.sendMessage("§7Aucune permission.");
+                    mod.sendMessage(NO_PERMISSION.getMessage());
                 } else {
                     for (String permission : permissions) {
                         mod.sendMessage("§7- " + permission);
@@ -124,10 +129,10 @@ public class PermissionCommand implements CommandExecutor, TabCompleter {
     }
 
     private void sendHelp(Player player) {
-        player.sendMessage("§6/perm give <joueur> <permission>");
-        player.sendMessage("§6/perm temp <joueur> <permission> <minutes>");
-        player.sendMessage("§6/perm remove <joueur> <permission>");
-        player.sendMessage("§6/perm list <joueur>");
+        player.sendMessage(PERMISSION_GIVE_HELP.getMessage());
+        player.sendMessage(PERMISSION_TEMP_HELP.getMessage());
+        player.sendMessage(PERMISSION_REMOVE_HELP.getMessage());
+        player.sendMessage(PERMISSION_LIST_HELP.getMessage());
     }
 
     @Override

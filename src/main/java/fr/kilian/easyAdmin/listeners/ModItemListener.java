@@ -3,19 +3,19 @@ package fr.kilian.easyAdmin.listeners;
 import fr.kilian.easyAdmin.Main;
 import fr.kilian.easyAdmin.models.enums.ModItem;
 import net.kyori.adventure.text.Component;
-import net.kyori.adventure.text.format.NamedTextColor;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
-import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerInteractEntityEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.persistence.PersistentDataType;
 import org.jspecify.annotations.NonNull;
+
+import static fr.kilian.easyAdmin.utils.MessagesFormats.CANNOT_SELF_TARGET;
 
 public class ModItemListener implements Listener {
 
@@ -63,7 +63,7 @@ public class ModItemListener implements Listener {
         event.setCancelled(true);
 
         if (target.equals(player)) {
-            player.sendMessage(Component.text("Vous ne pouvez pas vous cibler vous-même.", NamedTextColor.RED));
+            player.sendMessage(Component.text(CANNOT_SELF_TARGET.getMessage()));
             return;
         }
 

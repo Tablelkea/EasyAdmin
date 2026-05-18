@@ -3,13 +3,14 @@ package fr.kilian.easyAdmin.commands;
 import fr.kilian.easyAdmin.Main;
 import fr.kilian.easyAdmin.managers.FreezeManager;
 import net.kyori.adventure.text.Component;
-import net.kyori.adventure.text.format.NamedTextColor;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
+
+import static fr.kilian.easyAdmin.utils.MessagesFormats.*;
 
 public class UnfreezeCommand implements CommandExecutor {
 
@@ -22,16 +23,14 @@ public class UnfreezeCommand implements CommandExecutor {
         if (sender instanceof Player player &&
                 !player.hasPermission("easyadmin.unfreeze")) {
             sender.sendMessage(
-                    Component.text("Permission insuffisante.")
-                            .color(NamedTextColor.RED)
+                    Component.text(DONT_HAVE_PERMISSION.getMessage())
             );
             return true;
         }
 
         if (args.length < 1) {
             sender.sendMessage(
-                    Component.text("Usage: /unfreeze <joueur>")
-                            .color(NamedTextColor.YELLOW)
+                    Component.text(UNFREEZE_HELP.getMessage())
             );
             return true;
         }
@@ -40,8 +39,7 @@ public class UnfreezeCommand implements CommandExecutor {
 
         if (target == null) {
             sender.sendMessage(
-                    Component.text("Joueur introuvable.")
-                            .color(NamedTextColor.RED)
+                    Component.text(PLAYER_NOT_FOUND.getMessage())
             );
             return true;
         }
@@ -51,8 +49,7 @@ public class UnfreezeCommand implements CommandExecutor {
 
         if (!freezeManager.isFrozen(target)) {
             sender.sendMessage(
-                    Component.text("Ce joueur n'est pas freeze.")
-                            .color(NamedTextColor.RED)
+                    Component.text(PLAYER_NOT_FREEZE.getMessage())
             );
             return true;
         }
@@ -63,11 +60,6 @@ public class UnfreezeCommand implements CommandExecutor {
             // utilise la surcharge console-safe de ton manager
             freezeManager.unfreeze(target);
         }
-
-        sender.sendMessage(
-                Component.text(target.getName() + " a été unfreeze.")
-                        .color(NamedTextColor.GREEN)
-        );
 
         return true;
     }

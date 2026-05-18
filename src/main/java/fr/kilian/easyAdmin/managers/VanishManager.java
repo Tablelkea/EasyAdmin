@@ -12,6 +12,8 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
+import static fr.kilian.easyAdmin.utils.MessagesFormats.*;
+
 public class VanishManager {
 
     private final Map<UUID, BukkitTask> vanishedPlayers = new HashMap<>();
@@ -19,15 +21,12 @@ public class VanishManager {
     public void enable(@NonNull Player player) {
         BukkitTask task = Bukkit.getScheduler().runTaskTimer(
                 Main.getInstance(),
-                () -> player.sendActionBar(Component.text("Actuellement en ").color(NamedTextColor.GRAY)
-                        .append(Component.text("Vanish").color(NamedTextColor.RED))),
+                () -> player.sendActionBar(Component.text(IN_VANISH.getMessage())),
                 0L,
                 40L
         );
         vanishedPlayers.put(player.getUniqueId(), task);
-        player.sendMessage(Component.text("[ADMINISTRATION] Vous êtes désormais en mode ").color(NamedTextColor.GRAY)
-                .append(Component.text("Vanish").color(NamedTextColor.RED))
-                .append(Component.text(".").color(NamedTextColor.GRAY)));
+        player.sendMessage(Component.text(SWITCH_TO_VANISH.getMessage()));
         for (Player online : Bukkit.getOnlinePlayers()) {
             online.hidePlayer(Main.getInstance(), player);
         }
@@ -38,7 +37,7 @@ public class VanishManager {
     public void disable(@NonNull Player player) {
         BukkitTask task = vanishedPlayers.remove(player.getUniqueId());
         if (task != null) task.cancel();
-        player.sendMessage(Component.text("[ADMINISTRATION] Vous êtes désormais visible de tous.").color(NamedTextColor.GREEN));
+        player.sendMessage(Component.text(DISABLE_VANISH.getMessage()));
         for (Player online : Bukkit.getOnlinePlayers()) {
             online.showPlayer(Main.getInstance(), player);
         }

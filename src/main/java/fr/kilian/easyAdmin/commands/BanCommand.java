@@ -2,8 +2,8 @@ package fr.kilian.easyAdmin.commands;
 
 import fr.kilian.easyAdmin.Main;
 import fr.kilian.easyAdmin.managers.PunishmentManager;
+import static fr.kilian.easyAdmin.utils.MessagesFormats.*;
 import net.kyori.adventure.text.Component;
-import net.kyori.adventure.text.format.NamedTextColor;
 import org.bukkit.Bukkit;
 import org.bukkit.command.*;
 import org.bukkit.entity.Player;
@@ -20,26 +20,25 @@ public class BanCommand implements CommandExecutor {
         if (sender instanceof Player player &&
                 !player.hasPermission("easyadmin.ban")) {
             player.sendMessage(
-                    Component.text("Permission insuffisante.")
-                            .color(NamedTextColor.RED)
+                    Component.text(DONT_HAVE_PERMISSION.getMessage())
             );
             return true;
         }
 
         if (args.length < 2) {
-            sender.sendMessage("Usage: /ban <joueur> <raison>");
+            sender.sendMessage(BAN_HELP.getMessage());
             return true;
         }
 
         Player target = Bukkit.getPlayer(args[0]);
 
         if (target == null) {
-            sender.sendMessage("Joueur introuvable.");
+            sender.sendMessage(PLAYER_NOT_FOUND.getMessage());
             return true;
         }
 
         if (sender instanceof Player player && target.equals(player)) {
-            sender.sendMessage("Vous ne pouvez pas vous bannir.");
+            sender.sendMessage(CANNOT_SELF_BAN.getMessage());
             return true;
         }
 
@@ -50,15 +49,13 @@ public class BanCommand implements CommandExecutor {
                 Main.getInstance().getPunishmentManager();
 
         if (punishmentManager.isBanned(target.getUniqueId())) {
-            sender.sendMessage("Ce joueur est déjà banni.");
+            sender.sendMessage(PLAYER_ALREADY_BAN.getMessage());
             return true;
         }
 
         Player mod = sender instanceof Player p ? p : target;
 
         punishmentManager.ban(mod, target, reason);
-
-        sender.sendMessage(target.getName() + " a été banni.");
         return true;
     }
 }
